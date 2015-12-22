@@ -94,11 +94,11 @@ cleanToHextet = cleanTo (stopAt65535 >>> Hextet)
 -- |
 -- | To create one, use one of the following:
 -- | - [`ipv4`](#ipv4)
--- | - [`ipv4'`](#ipv4')
--- | - [`ipv4''`](#ipv4'')
+-- | - [`ipv4'`](#ipv4-1)
+-- | - [`ipv4''`](#ipv4-2)
 -- | - [`ipv6`](#ipv6)
--- | - [`ipv6'`](#ipv6')
--- | - [`ipv6''`](#ipv6'')
+-- | - [`ipv6'`](#ipv6-1)
+-- | - [`ipv6''`](#ipv6-2)
 -- |
 -- | Examples:
 -- |
@@ -131,10 +131,10 @@ instance showIP :: Show IP where
 -- | parameters will be stripped to 8 bits if longer, and made non-negative.
 -- |
 -- | If you would like IP creation to fail instead of cleaning up passed-in
--- | parameters, use [`ipv4'`](#ipv4').
+-- | parameters, use [`ipv4'`](#ipv4-1).
 -- |
 -- | If you would like to create an IP address from [`Octet`](#octet)s, please
--- | use [`ipv4''`](#ipv4'').
+-- | use [`ipv4''`](#ipv4-2).
 ipv4 :: Int -> Int -> Int -> Int -> IP
 ipv4 o1 o2 o3 o4 = IPv4
 	(cleanToOctet o1)
@@ -147,10 +147,10 @@ ipv4 o1 o2 o3 o4 = IPv4
 -- | non-negative.
 -- |
 -- | If you would like IP creation to fail instead of cleaning up passed-in
--- | parameters, use [`ipv6'`](#ipv6').
+-- | parameters, use [`ipv6'`](#ipv6-1).
 -- |
 -- | If you would like to create an IP address from [`Hextet`](#hextet)s, please
--- | use [`ipv6''`](#ipv6'').
+-- | use [`ipv6''`](#ipv6-2).
 ipv6 :: Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> IP
 ipv6 h1 h2 h3 h4 h5 h6 h7 h8 = IPv6
 	(cleanToHextet h1)
@@ -170,7 +170,7 @@ ipv6 h1 h2 h3 h4 h5 h6 h7 h8 = IPv6
 -- | parameters, use [`ipv4`](#ipv4).
 -- |
 -- | If you would like to create an IP address from [`Octet`](#octet)s, please
--- | use [`ipv4''`](#ipv4'').
+-- | use [`ipv4''`](#ipv4-2).
 ipv4' :: Int -> Int -> Int -> Int -> Maybe IP
 ipv4' o1 o2 o3 o4 = IPv4
 	<$> makeOctet o1
@@ -186,7 +186,7 @@ ipv4' o1 o2 o3 o4 = IPv4
 -- | parameters, use [`ipv6`](#ipv6).
 -- |
 -- | If you would like to create an IP address from [`Hextet`](#hextet)s, please
--- | use [`ipv6''`](#ipv6'').
+-- | use [`ipv6''`](#ipv6-2).
 ipv6' :: Int -> Int -> Int -> Int -> Int -> Int -> Int -> Int -> Maybe IP
 ipv6' h1 h2 h3 h4 h5 h6 h7 h8 = IPv6
 	<$> makeHextet h1
@@ -201,23 +201,23 @@ ipv6' h1 h2 h3 h4 h5 h6 h7 h8 = IPv6
 -- | Creates an IPv4 address from four [`Octet`](#octet)s.
 -- |
 -- | If you would like to create an IP address from `Integers`, use either
--- | [`ipv4`](#ipv4) or [`ipv4'`](#ipv4').
+-- | [`ipv4`](#ipv4) or [`ipv4'`](#ipv4-1).
 ipv4'' :: Octet -> Octet -> Octet -> Octet -> IP
 ipv4'' o1 o2 o3 o4 = IPv4 o1 o2 o3 o4
 
 -- | Creates an IPv6 address from eight [`Hextets`](#hextet)s.
 -- |
 -- | If you would like to create an IP address from `Integers`, use either
--- | [`ipv6`](#ipv6) or [`ipv6'`](#ipv6').
+-- | [`ipv6`](#ipv6) or [`ipv6'`](#ipv6-1).
 ipv6'' :: Hextet -> Hextet -> Hextet -> Hextet -> Hextet -> Hextet -> Hextet -> Hextet -> IP
 ipv6'' h1 h2 h3 h4 h5 h6 h7 h8 = IPv6 h1 h2 h3 h4 h5 h6 h7 h8
 
--- | Verifies whether or not an IP address is version 4.
+-- | Verifies whether or not an IP address is Version 4.
 isIPv4 :: IP -> Boolean
 isIPv4 (IPv4 _ _ _ _) = true
 isIPv4 _              = false
 
--- | Verifies whether or not an IP address is version 6.
+-- | Verifies whether or not an IP address is Version 6.
 isIPv6 :: IP -> Boolean
 isIPv6 = isIPv4 >>> not
 
