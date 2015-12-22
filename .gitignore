@@ -1,0 +1,7 @@
+/bower_components/
+/node_modules/
+/notes
+/output/
+/.psci*
+/.pulp-cache/
+/src/.webpack.js

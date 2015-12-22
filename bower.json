@@ -1,0 +1,17 @@
+{
+  "name": "purescript-ips",
+  "version": "1.0.0",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "node_modules",
+    "notes",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-maybe": "~0.3.5"
+  }
+}
