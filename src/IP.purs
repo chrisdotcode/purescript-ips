@@ -23,10 +23,10 @@ import Prelude
 
 import Data.Maybe (Maybe(Just, Nothing))
 
--- | An unsigned 32-bit integer.
+-- | An unsigned 8-bit integer.
 newtype Octet = Octet Int
 
- -- | An unsigned 128-bit integer.
+ -- | An unsigned 16-bit integer.
 newtype Hextet = Hextet Int
 
 instance showOctet :: Show Octet where
@@ -41,8 +41,8 @@ foreign import _toHexString :: Int -> String
 toHexString :: Hextet -> String
 toHexString (Hextet h) = _toHexString h
 
--- | Attempts to create an Octet from an unsigned 32-bit integer. If the given
--- | integer is signed negatively, or larger than 32-bits, `Nothing` is
+-- | Attempts to create an Octet from an unsigned 8-bit integer. If the given
+-- | integer is signed negatively, or larger than 8-bits, `Nothing` is
 -- | returned.
 makeOctet :: Int -> Maybe Octet
 makeOctet x
@@ -50,8 +50,8 @@ makeOctet x
 	| x > 0xff  = Nothing
 	| otherwise = Just $ Octet x
 
--- | Attempts to create an Hextet from an unsigned 128-bit integer. If the
--- | given integer is signed negatively, or larger than 128-bits, `Nothing` is
+-- | Attempts to create an Hextet from an unsigned 16-bit integer. If the
+-- | given integer is signed negatively, or larger than 16-bits, `Nothing` is
 -- | returned.
 makeHextet :: Int -> Maybe Hextet
 makeHextet x
@@ -78,14 +78,14 @@ abs x
 cleanTo :: forall a. (Int -> a) -> Int -> a
 cleanTo fn = abs >>> fn
 
--- | Takes an `Integer` and returns an unsigned 32-bit [`Octet`](#octet). The
--- | passed-in parameters will be stripped to 32 bits if longer, and made
+-- | Takes an `Integer` and returns an unsigned 8-bit [`Octet`](#octet). The
+-- | passed-in parameters will be stripped to 8 bits if longer, and made
 -- | non-negative.
 cleanToOctet :: Int -> Octet
 cleanToOctet = cleanTo (stopAt255 >>> Octet)
 
--- | Takes an `Integer` and returns an unsigned 128-bit [`Hextet`](#hextet). The
--- | passed-in parameters will be stripped to 128 bits if longer, and made
+-- | Takes an `Integer` and returns an unsigned 16-bit [`Hextet`](#hextet). The
+-- | passed-in parameters will be stripped to 16 bits if longer, and made
 -- | non-negative.
 cleanToHextet :: Int -> Hextet
 cleanToHextet = cleanTo (stopAt65535 >>> Hextet)
@@ -127,8 +127,8 @@ instance showIP :: Show IP where
 		++ ":" ++ toHexString h7
 		++ ":" ++ toHexString h8
 
--- | Creates an IPv4 address from four unsigned 32-bit `Integer`s. All passed-in
--- | parameters will be stripped to 32 bits if longer, and made non-negative.
+-- | Creates an IPv4 address from four unsigned 8-bit `Integer`s. All passed-in
+-- | parameters will be stripped to 8 bits if longer, and made non-negative.
 -- |
 -- | If you would like IP creation to fail instead of cleaning up passed-in
 -- | parameters, use [`ipv4'`](#ipv4').
@@ -142,8 +142,8 @@ ipv4 o1 o2 o3 o4 = IPv4
 	(cleanToOctet o3)
 	(cleanToOctet o4)
 
--- | Creates an IPv6 address from eight unsigned 128-bit `Integer`s. All passed
--- | in parameters will be stripped to 128 bits if longer, and made
+-- | Creates an IPv6 address from eight unsigned 16-bit `Integer`s. All passed
+-- | in parameters will be stripped to 16 bits if longer, and made
 -- | non-negative.
 -- |
 -- | If you would like IP creation to fail instead of cleaning up passed-in
@@ -162,9 +162,9 @@ ipv6 h1 h2 h3 h4 h5 h6 h7 h8 = IPv6
 	(cleanToHextet h7)
 	(cleanToHextet h8)
 
--- | Creates an IPv4 address from four unsigned 32-bit `Integer`s. The creation
+-- | Creates an IPv4 address from four unsigned 8-bit `Integer`s. The creation
 -- | will fail if at least one of the passed-in parameters is not unsigned and
--- | 32-bits.
+-- | 8-bits.
 -- |
 -- | If you would like IP address creation to sanitize your passed-in
 -- | parameters, use [`ipv4`](#ipv4).
@@ -178,9 +178,9 @@ ipv4' o1 o2 o3 o4 = IPv4
 	<*> makeOctet o3
 	<*> makeOctet o4
 
--- | Creates an IPv6 address from eight unsigned 128-bit `Integer`s. The
+-- | Creates an IPv6 address from eight unsigned 16-bit `Integer`s. The
 -- | creation will fail if at least one of the passed-in parameters is not
--- | unsigned and 128-bits.
+-- | unsigned and 16-bits.
 -- |
 -- | If you would like IP address creation to sanitize your passed-in
 -- | parameters, use [`ipv6`](#ipv6).

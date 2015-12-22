@@ -4,7 +4,8 @@ A PureScript package that provides types for working with IP addresses.
 
 Installation
 ------------
-bower install purescript-ips
+
+    bower install purescript-ips
 
 Module documentation
 --------------------
