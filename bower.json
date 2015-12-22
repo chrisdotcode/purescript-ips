@@ -1,6 +1,10 @@
 {
   "name": "purescript-ips",
-  "version": "1.0.2",
+  "version": "1.0.3",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/chrisdotcode/purescript-ips.git"
+  },
   "moduleType": [
     "node"
   ],
