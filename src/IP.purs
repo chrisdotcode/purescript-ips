@@ -23,10 +23,10 @@ import Prelude
 
 import Data.Maybe (Maybe(Just, Nothing))
 
--- | An unsigned 8-bit integer.
+-- | An unsigned 32-bit integer.
 newtype Octet = Octet Int
 
- -- | An unsigned 16-bit integer.
+ -- | An unsigned 128-bit integer.
 newtype Hextet = Hextet Int
 
 instance showOctet :: Show Octet where
@@ -78,11 +78,15 @@ abs x
 cleanTo :: forall a. (Int -> a) -> Int -> a
 cleanTo fn = abs >>> fn
 
--- | Takes an `Integer` and returns an unsigned 32-bit [`Octet`](#octet).
+-- | Takes an `Integer` and returns an unsigned 32-bit [`Octet`](#octet). The
+-- | passed-in parameters will be stripped to 32 bits if longer, and made
+-- | non-negative.
 cleanToOctet :: Int -> Octet
 cleanToOctet = cleanTo (stopAt255 >>> Octet)
 
--- | Takes an `Integer` and returns an unsigned 128-bit [`Hextet`](#hextet).
+-- | Takes an `Integer` and returns an unsigned 128-bit [`Hextet`](#hextet). The
+-- | passed-in parameters will be stripped to 128 bits if longer, and made
+-- | non-negative.
 cleanToHextet :: Int -> Hextet
 cleanToHextet = cleanTo (stopAt65535 >>> Hextet)
 
@@ -102,11 +106,12 @@ cleanToHextet = cleanTo (stopAt65535 >>> Hextet)
 -- |     255.9.255.255
 -- |     λ> ipv6 0xffff 0xffff 0xffff 0xffff 0xffff 0xffff 20 0xffff
 -- |     ffff:ffff:ffff:ffff:ffff:ffff:14:ffff
+-- |
+-- | The IP show instance will return syntactically-valid IP address that can be
+-- | used in other programs.
 data IP = IPv4 Octet Octet Octet Octet
 		| IPv6 Hextet Hextet Hextet Hextet Hextet Hextet Hextet Hextet
 
--- | The IP show instance will return syntactically-valid IP address that can be
--- | used in other programs.
 instance showIP :: Show IP where
 	show (IPv4 o1 o2 o3 o4) = show o1
 		++ "." ++ show o2
@@ -122,7 +127,7 @@ instance showIP :: Show IP where
 		++ ":" ++ toHexString h7
 		++ ":" ++ toHexString h8
 
--- | Creates an IPv4 address from four unsigned 32-bit `Integer`s. All passed in
+-- | Creates an IPv4 address from four unsigned 32-bit `Integer`s. All passed-in
 -- | parameters will be stripped to 32 bits if longer, and made non-negative.
 -- |
 -- | If you would like IP creation to fail instead of cleaning up passed-in
